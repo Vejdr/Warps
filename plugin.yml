@@ -1,0 +1,10 @@
+main: me.setwarp.pl.Main
+name: CmdWarps
+author: Vejdr_
+version: 1.0
+
+commands: 
+   warp:   
+   setwarp:
+   delwarp: 
+ 
