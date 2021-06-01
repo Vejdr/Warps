@@ -1,0 +1,61 @@
+package me.setwarp.pl;
+
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import net.md_5.bungee.api.ChatColor;
+
+public class SetWarp implements CommandExecutor {
+	
+	
+	private Main plugin;
+	
+	public SetWarp(Main plugin) {
+		this.plugin = plugin;
+		plugin.getCommand("setwarp").setExecutor(this);
+		
+	}
+
+
+	public boolean onCommand(CommandSender commandsender, Command command, String s, String[] strings) {
+		
+		if (!(commandsender instanceof Player)) {
+			commandsender.sendMessage(ChatColor.RED + "Tenhle command může použít jen hráč!");
+			return false;
+			
+		}
+		
+		Player p = (Player) commandsender;	
+				
+		
+		
+		if (strings.length == 0) {
+			p.sendMessage(ChatColor.RED + "Musíš napsat jméno warpu!");
+			return false;
+		}
+		String name = strings[0].toLowerCase();
+		if (plugin.getConfig().get(name) != null) {
+			p.sendMessage(ChatColor.RED + "Toto jméno warpu je zabrané!");
+			
+		}
+		Location loc = p.getLocation();
+		plugin.getConfig().set(name + ".World", loc.getWorld().getName());
+		plugin.getConfig().set(name + ".X", loc.getX());
+		plugin.getConfig().set(name + ".Y", loc.getY());
+		plugin.getConfig().set(name + ".Z", loc.getZ());
+		plugin.getConfig().set(name + ".Pitch", loc.getPitch());
+		plugin.getConfig().set(name + ".Yaw", loc.getYaw());
+		p.sendMessage(ChatColor.GREEN + "Warp nastaven!");
+				
+		
+		
+		return true;
+	}
+	
+	
+	
+
+}
