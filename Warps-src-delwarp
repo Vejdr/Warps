@@ -1,0 +1,53 @@
+package me.setwarp.pl;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import net.md_5.bungee.api.ChatColor;
+
+public class DelWarp implements CommandExecutor {
+	
+	private Main plugin;
+	
+	public DelWarp(Main plugin) {
+		this.plugin = plugin;
+		plugin.getCommand("delwarp").setExecutor(this);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender commandsender, Command command, String s, String[] strings) {
+		if (!(commandsender instanceof Player)) {
+			commandsender.sendMessage(ChatColor.RED + "Tenhle command může použít jen hráč!");
+		}
+		
+		Player p = (Player) commandsender;
+		if (!p.hasPermission("cmd.delwarp")) {
+			p.sendMessage("Nemas permisse!");
+			return false;
+			
+		}
+		
+		if (strings.length == 0) {
+			p.sendMessage(ChatColor.RED + "Prosim napis jmeno!");
+			return false;
+		}
+		
+		String name = strings[0].toLowerCase();
+		if (plugin.getConfig().get(name) == null) {
+			p.sendMessage(ChatColor.RED + "Toto jméno warpu neexistuje!");
+			return false;
+			
+		}
+		
+		plugin.getConfig().set(name, null);
+		plugin.saveConfig();
+		p.sendMessage(ChatColor.GREEN + "Warp " + name + ChatColor.GREEN + " Byl zmazán!");
+	
+		return false;
+	}
+	
+	
+}
+
